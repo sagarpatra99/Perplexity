@@ -1,5 +1,5 @@
-import { success } from "zod";
 import userModel from "../models/user.model.js";
+import { sendEmail } from "../services/mail.service.js";
 
 export const controllerRegister = async (req, res) => {
   try {
@@ -25,8 +25,56 @@ export const controllerRegister = async (req, res) => {
       password,
     });
 
+    await sendEmail({
+  to: email,
+  subject: "Welcome to Perplexity 🚀",
+  html: `
+  <div style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px;">
+    <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 8px; overflow: hidden;">
+
+      <!-- Header -->
+      <div style="background-color: #4f46e5; padding: 20px; text-align: center; color: white;">
+        <h1 style="margin: 0;">Perplexity</h1>
+      </div>
+
+      <!-- Body -->
+      <div style="padding: 30px;">
+        <h2 style="color: #333;">Hi ${username}, 👋</h2>
+
+        <p style="color: #555; font-size: 16px; line-height: 1.6;">
+          Welcome to <strong>Perplexity</strong>! We're excited to have you on board.
+        </p>
+
+        <p style="color: #555; font-size: 16px; line-height: 1.6;">
+          You can now explore the platform and start using all features.
+        </p>
+
+        <!-- CTA Button -->
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="#" 
+             style="background-color: #4f46e5; color: white; padding: 12px 24px; 
+                    text-decoration: none; border-radius: 6px; font-weight: bold;">
+            Get Started
+          </a>
+        </div>
+
+        <p style="color: #999; font-size: 14px;">
+          If you didn’t create this account, you can safely ignore this email.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div style="background-color: #f4f6f8; text-align: center; padding: 15px; font-size: 12px; color: #888;">
+        © ${new Date().getFullYear()} Perplexity. All rights reserved.
+      </div>
+
+    </div>
+  </div>
+  `,
+});
+
     res.status(201).json({
-      message: "User created successfully!",
+      message: "User registered successfully!",
       success: true,
       user: {
         id: user._id,

@@ -1,11 +1,14 @@
 import 'dotenv/config';
 import app from './src/app.js';
 import connectDB from './src/config/database.js';
+import { testAi } from './src/services/ai.service.js';
 
 // Set NODE_ENV
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const PORT = process.env.PORT || 8080;
+
+testAi()
 
 const startServer = async () => {
   try {
